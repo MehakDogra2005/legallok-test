@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,6 +36,7 @@
             background-color: #f5f7fa;
             line-height: 1.6;
         }
+
         a {
             text-decoration: none;
         }
@@ -54,7 +56,8 @@
             z-index: 1000;
         }
 
-        .top-nav-left, .top-nav-right {
+        .top-nav-left,
+        .top-nav-right {
             display: flex;
             align-items: center;
             gap: 1rem;
@@ -122,7 +125,8 @@
             visibility: visible;
         }
 
-        .profile-dropdown a, .profile-dropdown button {
+        .profile-dropdown a,
+        .profile-dropdown button {
             display: block;
             width: 100%;
             padding: 0.7rem 1rem;
@@ -134,7 +138,8 @@
             transition: var(--transition);
         }
 
-        .profile-dropdown a:hover, .profile-dropdown button:hover {
+        .profile-dropdown a:hover,
+        .profile-dropdown button:hover {
             background-color: rgba(0, 0, 0, 0.05);
         }
 
@@ -339,10 +344,14 @@
         }
 
         @keyframes bounce {
-            0%, 80%, 100% { 
+
+            0%,
+            80%,
+            100% {
                 transform: scale(0);
             }
-            40% { 
+
+            40% {
                 transform: scale(1);
             }
         }
@@ -375,12 +384,15 @@
             .sidebar {
                 transform: translateX(-100%);
             }
+
             .sidebar.active {
                 transform: translateX(0);
             }
+
             .main-content {
                 margin-left: 0;
             }
+
             .mobile-menu-btn {
                 display: block;
             }
@@ -390,6 +402,7 @@
             .message {
                 max-width: 90%;
             }
+
             .chatbot-container {
                 height: calc(100vh - 120px);
             }
@@ -399,12 +412,15 @@
             .top-nav {
                 padding: 1rem;
             }
+
             .main-content {
                 padding: 1rem;
             }
+
             .chat-input-container {
                 flex-direction: column;
             }
+
             .send-btn {
                 width: 100%;
                 border-radius: 0.3rem;
@@ -414,6 +430,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Top Navigation Bar -->
     <nav class="top-nav">
@@ -426,7 +443,7 @@
                 <span>Legal Lok</span>
             </div>
         </div>
-        
+
         <div class="top-nav-right">
             <div class="user-profile">
                 <div class="user-avatar" tabindex="0">
@@ -440,7 +457,7 @@
             </div>
         </div>
     </nav>
-    
+
     <!-- Main Content Area -->
     <div class="content-area">
         <!-- Side Navigation -->
@@ -449,38 +466,38 @@
                 <i class="fas fa-home"></i>
                 <a href="/dashboard"><span>Dashboard</span></a>
             </div>
-            
+
             <div class="sidebar-item active">
                 <i class="fas fa-robot"></i>
                 <a href="/chatbot"><span>Legal Chatbot</span></a>
             </div>
-            
+
             <div class="sidebar-item">
                 <i class="fas fa-file-alt"></i>
                 <a href="/form"><span>Forms</span></a>
             </div>
-            
+
             <div class="sidebar-item">
                 <i class="fas fa-users"></i>
                 <a href="/community"><span>Community Forum</span></a>
             </div>
-            
+
             <div class="sidebar-item">
                 <i class="fas fa-gavel"></i>
                 <a href="/form_filled"><span>Petitions</span></a>
             </div>
-            
+
             <div class="sidebar-item">
                 <i class="fas fa-bell"></i>
                 <a href="#"><span>Notifications</span></a>
             </div>
-            
+
             <div class="sidebar-item">
                 <i class="fas fa-cog"></i>
                 <a href="#"><span>Settings</span></a>
             </div>
         </div>
-        
+
         <!-- Main Content -->
         <div class="main-content">
             <div class="chatbot-container">
@@ -488,18 +505,19 @@
                     <h1 class="chatbot-title">Legal Chatbot</h1>
                     <p class="chatbot-subtitle">Get instant answers to your legal questions</p>
                 </div>
-                
+
                 <div class="chatbot-disclaimer">
-                    <strong>Disclaimer:</strong> This AI assistant provides general legal information, not professional advice. For complex issues, consult a qualified lawyer.
+                    <strong>Disclaimer:</strong> This AI assistant provides general legal information, not professional
+                    advice. For complex issues, consult a qualified lawyer.
                 </div>
-                
+
                 <div class="chat-messages" id="chatMessages">
                     <!-- Initial welcome message -->
                     <div class="message bot-message">
                         Hello! I'm your Legal Lok assistant. How can I help you with legal matters today?
                         <div class="message-time">Just now</div>
                     </div>
-                    
+
                     <!-- Suggested questions will appear here -->
                     <div class="suggested-questions" id="suggestedQuestions">
                         <div class="suggested-question">How to file for divorce?</div>
@@ -508,9 +526,10 @@
                         <div class="suggested-question">How to draft a will?</div>
                     </div>
                 </div>
-                
+
                 <div class="chat-input-container">
-                    <textarea class="chat-input" id="userInput" placeholder="Type your legal question here..." rows="1"></textarea>
+                    <textarea class="chat-input" id="userInput" placeholder="Type your legal question here..."
+                        rows="1"></textarea>
                     <button class="send-btn" id="sendButton">
                         <i class="fas fa-paper-plane"></i>
                     </button>
@@ -525,39 +544,73 @@
         const userInput = document.getElementById('userInput');
         const sendButton = document.getElementById('sendButton');
         const suggestedQuestions = document.getElementById('suggestedQuestions');
-        
-        // DeepSeek API Integration
-        const DEEPSEEK_API_KEY = ''; // Replace with your actual API key
-        const DEEPSEEK_API_URL = 'POST https://api.deepseek.com/v1/chat/completions'; // Example endpoint
-        
-        // Mobile menu toggle
-        document.querySelector('.mobile-menu-btn')?.addEventListener('click', function() {
-            document.querySelector('.sidebar').classList.toggle('active');
-            this.classList.toggle('active');
+        let lastSentTime = 0;
+    
+        // Initialize chat from localStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFromLocalStorage();
+            
+            // Mobile menu toggle
+            document.querySelector('.mobile-menu-btn')?.addEventListener('click', function() {
+                document.querySelector('.sidebar').classList.toggle('active');
+                this.classList.toggle('active');
+            });
+    
+            // Profile dropdown toggle
+            document.querySelector('.user-avatar')?.addEventListener('click', function(e) {
+                e.stopPropagation();
+                document.querySelector('.user-profile').classList.toggle('active');
+            });
+    
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function() {
+                document.querySelector('.user-profile')?.classList.remove('active');
+            });
+    
+            // Auto-resize textarea
+            userInput.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = (this.scrollHeight) + 'px';
+            });
+    
+            // Event listeners
+            sendButton.addEventListener('click', sendMessage);
+            userInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+    
+            // Suggested questions click handler
+            document.querySelectorAll('.suggested-question').forEach(question => {
+                question.addEventListener('click', function() {
+                    userInput.value = this.textContent;
+                    userInput.focus();
+                    userInput.dispatchEvent(new Event('input')); // Trigger resize
+                });
+            });
         });
-        
-        // Profile dropdown toggle
-        document.querySelector('.user-avatar')?.addEventListener('click', function(e) {
-            e.stopPropagation();
-            document.querySelector('.user-profile').classList.toggle('active');
-        });
-        
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function() {
-            document.querySelector('.user-profile')?.classList.remove('active');
-        });
-        
-        // Auto-resize textarea
-        userInput.addEventListener('input', function() {
-            this.style.height = 'auto';
-            this.style.height = (this.scrollHeight) + 'px';
-        });
-        
+    
         // Send message function
         async function sendMessage() {
             const message = userInput.value.trim();
-            if (!message) return;
             
+            // Input validation
+            if (!message) return;
+            if (message.length > 1000) {
+                showToast('Message too long (max 1000 characters)', 'warning');
+                return;
+            }
+            
+            // Rate limiting (1 second between messages)
+            const now = Date.now();
+            if (now - lastSentTime < 1000) {
+                showToast('Please wait a moment before sending another message', 'warning');
+                return;
+            }
+            lastSentTime = now;
+    
             // Add user message to chat
             addMessage(message, 'user');
             userInput.value = '';
@@ -567,80 +620,96 @@
             const loadingId = showLoading();
             
             try {
-                // Call DeepSeek API
-                const response = await fetch(DEEPSEEK_API_URL, {
+                // Set timeout for the request (10 seconds)
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000);
+    
+                // Send user query to Flask backend
+                const response = await fetch('http://localhost:5000/chatbot', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${DEEPSEEK_API_KEY}`
+                        'Accept': 'application/json'
                     },
                     body: JSON.stringify({
-                        model: "deepseek-legal",
-                        messages: [
-                            {
-                                role: "system",
-                                content: "You are a legal assistant for Legal Lok, providing accurate and helpful information about Indian law. Always cite relevant laws and sections when possible. Be concise but thorough."
-                            },
-                            {
-                                role: "user",
-                                content: message
-                            }
-                        ],
-                        temperature: 0.7,
-                        max_tokens: 1000
-                    })
+                        user_id: "user123",
+                        user_query: message
+                    }),
+                    signal: controller.signal
                 });
                 
-                const data = await response.json();
+                clearTimeout(timeoutId);
                 
-                // Remove loading indicator
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
                 removeLoading(loadingId);
                 
-                // Add bot response to chat
-                if (data.choices && data.choices[0].message.content) {
-                    addMessage(data.choices[0].message.content, 'bot');
+                if (data.response) {
+                    addMessage(data.response, 'bot');
+                    showToast('Reply received', 'success');
                 } else {
-                    addMessage("I'm sorry, I couldn't process your request. Please try again later.", 'bot');
+                    throw new Error("Empty response from server");
                 }
             } catch (error) {
-                console.error('Error calling DeepSeek API:', error);
+                console.error('Full error details:', error);
                 removeLoading(loadingId);
-                addMessage("I'm having trouble connecting to the legal database. Please try again later.", 'bot');
+                
+                let errorMessage = "I'm having trouble connecting to the server. Please try again later.";
+                if (error.name === 'AbortError') {
+                    errorMessage = "Request timed out. Please try again.";
+                } else if (error.message.includes('500')) {
+                    errorMessage = "Server error occurred. Please try again later.";
+                } else if (error.message) {
+                    errorMessage = error.message;
+                }
+                
+                addMessage(errorMessage, 'bot');
+                showToast(errorMessage, 'error');
             }
         }
-        
+    
         // Add message to chat
         function addMessage(content, sender) {
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${sender}-message`;
             messageDiv.innerHTML = `
-                ${content}
-                <div class="message-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                <div class="message-content">${content}</div>
+                <div class="message-time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
             `;
             chatMessages.appendChild(messageDiv);
             chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Save to localStorage
+            saveToLocalStorage(content, sender);
             
             // Hide suggested questions after first user message
             if (sender === 'user') {
                 suggestedQuestions.style.display = 'none';
             }
         }
-        
+    
         // Show loading indicator
         function showLoading() {
             const loadingDiv = document.createElement('div');
-            loadingDiv.className = 'loading-dots';
+            loadingDiv.className = 'message bot-message loading-message';
             loadingDiv.id = 'loading-' + Date.now();
             loadingDiv.innerHTML = `
-                <div class="loading-dot"></div>
-                <div class="loading-dot"></div>
-                <div class="loading-dot"></div>
+                <div class="typing-indicator">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="message-time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
             `;
             chatMessages.appendChild(loadingDiv);
             chatMessages.scrollTop = chatMessages.scrollHeight;
             return loadingDiv.id;
         }
-        
+    
         // Remove loading indicator
         function removeLoading(id) {
             const loadingElement = document.getElementById(id);
@@ -648,24 +717,96 @@
                 loadingElement.remove();
             }
         }
-        
-        // Event listeners
-        sendButton.addEventListener('click', sendMessage);
-        
-        userInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
-            }
-        });
-        
-        // Suggested questions click handler
-        document.querySelectorAll('.suggested-question').forEach(question => {
-            question.addEventListener('click', function() {
-                userInput.value = this.textContent;
-                userInput.focus();
+    
+        // Save message to localStorage
+        function saveToLocalStorage(content, sender) {
+            const chat = JSON.parse(localStorage.getItem('chatHistory')) || [];
+            chat.push({ 
+                content, 
+                sender, 
+                timestamp: new Date().toISOString() 
             });
-        });
+            localStorage.setItem('chatHistory', JSON.stringify(chat));
+        }
+    
+        // Load messages from localStorage
+        function loadFromLocalStorage() {
+            const chat = JSON.parse(localStorage.getItem('chatHistory')) || [];
+            if (chat.length > 0) {
+                suggestedQuestions.style.display = 'none';
+            }
+            chat.forEach(msg => {
+                addMessage(msg.content, msg.sender);
+            });
+        }
+    
+        // Show toast notification
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
     </script>
+    <style>
+    /* Typing indicator */
+    .typing-indicator {
+        display: inline-flex;
+        gap: 4px;
+        padding: 8px 0;
+    }
+    .typing-indicator span {
+        width: 8px;
+        height: 8px;
+        background: #666;
+        border-radius: 50%;
+        display: inline-block;
+        animation: bounce 1.4s infinite ease-in-out;
+    }
+    .typing-indicator span:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+    .typing-indicator span:nth-child(3) {
+        animation-delay: 0.4s;
+    }
+    @keyframes bounce {
+        0%, 60%, 100% { transform: translateY(0); }
+        30% { transform: translateY(-5px); }
+    }
+
+    /* Toast notifications */
+    .toast {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        padding: 12px 24px;
+        border-radius: 4px;
+        color: white;
+        z-index: 1000;
+        opacity: 1;
+        transition: opacity 0.3s;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    .toast.success { background: #4CAF50; }
+    .toast.error { background: #F44336; }
+    .toast.warning { background: #FF9800; }
+    .toast.info { background: #2196F3; }
+
+    /* Message styling */
+    .message-content {
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+    .loading-message {
+        opacity: 0.8;
+    }
+</style>
+
+
 </body>
+
 </html>
