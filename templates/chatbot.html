@@ -620,12 +620,12 @@
             const loadingId = showLoading();
             
             try {
-                // Set timeout for the request (10 seconds)
+                // Set timeout for the request (30 seconds instead of 10)
                 const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 10000);
+                const timeoutId = setTimeout(() => controller.abort(), 30000);
     
                 // Send user query to Flask backend
-                const response = await fetch('http://localhost:5000/chatbot', {
+                const response = await fetch('http://192.168.1.4:5000/chatbot', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -660,9 +660,11 @@
                 
                 let errorMessage = "I'm having trouble connecting to the server. Please try again later.";
                 if (error.name === 'AbortError') {
-                    errorMessage = "Request timed out. Please try again.";
+                    errorMessage = "The request is taking longer than expected. Please try again with a simpler question.";
                 } else if (error.message.includes('500')) {
                     errorMessage = "Server error occurred. Please try again later.";
+                } else if (error.message.includes('not properly configured')) {
+                    errorMessage = "The chatbot is not properly configured. Please check the server logs for details.";
                 } else if (error.message) {
                     errorMessage = error.message;
                 }
