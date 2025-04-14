@@ -98,7 +98,6 @@
             color: white;
             min-height: 70vh;
         }
-        
         .hero::before {
             content: "";
             position: absolute;
@@ -106,10 +105,23 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, rgba(145, 101, 83, 0.4) 0%, rgba(112, 49, 12, 0.4) 100%),
-                        url('Untitled design.gif') center/cover;
+            background: 
+                linear-gradient(135deg, rgba(145, 101, 83, 0.4) 0%, rgba(112, 49, 12, 0.4) 100%),
+                url('static/front.png') center/cover no-repeat;
             z-index: -1;
         }
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 100%;
+            background: 
+                linear-gradient(135deg, rgba(145, 101, 83, 0.4) 0%, rgba(112, 49, 12, 0.4) 100%),
+                url('static/front page.png') center center / cover no-repeat;
+            z-index: -1;
+        }
+
         
         .hero-content {
             max-width: 600px;
@@ -228,13 +240,6 @@
     <!-- Navigation Bar -->
     <nav>
         <a href="#" class="logo">LEGAL LOK</a>
-        <div class="nav-links">
-            <a href="#">Home</a>
-            <a href="/form">Forms</a>
-            <a href="#">Petitions</a>
-            <a href="/community">Community Forum</a>
-            <a href="#">About Us</a>
-        </div>
         <div class="auth-buttons">
             <a href ="/login"><button class="auth-button login">Log In</button></a>
             <a href ="/signup"><button class="auth-button signup">Sign Up (User)</button></a>

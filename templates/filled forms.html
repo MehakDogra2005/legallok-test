@@ -4,10 +4,472 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Applications | Legal Nayak</title>
-    <link rel="stylesheet" href="static/filledforms.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #482d04;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+        a{
+            color: inherit;
+            text-decoration: none; 
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            background-color: #583014;
+            border-radius: 50%;
+        }
+
+        .brand-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            background-color: #643b0d;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background-color: #652e09;
+            transform: translateY(-2px);
+        }
+
+        /* Dashboard Container */
+        .dashboard-container {
+            display: flex;
+            margin-top: 70px;
+            min-height: calc(100vh - 70px);
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background-color: #895c45;
+            color: white;
+            padding: 20px 0;
+            transition: all 0.3s ease;
+            position: fixed;
+            height: calc(100vh - 70px);
+            overflow-y: auto;
+        }
+
+        .sidebar-item {
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: white;
+        }
+
+        .sidebar-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .sidebar-item.active {
+            background-color: #af5616;
+        }
+
+        .sidebar-item i {
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-item span {
+            font-size: 0.95rem;
+        }
+
+        /* Main Content Area */
+        .dashboard-header {
+            margin-left: 250px;
+            padding: 30px;
+            width: calc(100% - 250px);
+            transition: all 0.3s ease;
+        }
+
+        .dashboard-title {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #5e3721;
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .filter-select {
+            padding: 8px 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            background-color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-select:hover {
+            border-color: #4a6fa5;
+        }
+
+        /* Applications Grid */
+        .applications-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .application-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .application-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .application-title {
+            font-size: 1.2rem;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .application-id, .application-date {
+            font-size: 0.8rem;
+            color: #777;
+        }
+
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-inprogress {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-completed {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-pending {
+            background-color: #cce5ff;
+            color: #004085;
+        }
+
+        .status-rejected {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .progress-container {
+            margin: 15px 0;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .status-inprogress + .progress-container .progress-fill {
+            background-color: #ffc107;
+        }
+
+        .status-completed + .progress-container .progress-fill {
+            background-color: #28a745;
+        }
+
+        .status-pending + .progress-container .progress-fill {
+            background-color: #007bff;
+        }
+
+        .status-rejected + .progress-container .progress-fill {
+            background-color: #dc3545;
+        }
+
+        .card-details {
+            margin: 15px 0;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+        }
+
+        .detail-label {
+            font-weight: 500;
+            color: #555;
+        }
+
+        .timeline {
+            margin: 20px 0;
+            border-left: 2px solid #4a6fa5;
+            padding-left: 15px;
+        }
+
+        .timeline-item {
+            margin-bottom: 15px;
+            position: relative;
+            padding-left: 15px;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #4a6fa5;
+        }
+
+        .timeline-date {
+            font-size: 0.75rem;
+            color: #777;
+            margin-bottom: 3px;
+        }
+
+        .timeline-content {
+            font-size: 0.85rem;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            padding: 8px 15px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .view-btn {
+            background-color: #4a6fa5;
+            color: white;
+        }
+
+        .view-btn:hover {
+            background-color: #3a5a80;
+            transform: translateY(-2px);
+        }
+
+        .download-btn {
+            background-color: #f8f9fa;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+
+        .download-btn:hover {
+            background-color: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            display: none;
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            color: #6c757d;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            color: #343a40;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            color: #6c757d;
+            margin-bottom: 20px;
+        }
+
+        /* Sidebar Toggle Button */
+        .sidebar-toggle {
+            position: fixed;
+            left: 10px;
+            top: 10px;
+            z-index: 1000;
+            background: #472c07;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+        }
+
+        /* Collapsed Sidebar */
+        .sidebar.collapsed {
+            width: 70px;
+            overflow: hidden;
+        }
+
+        .sidebar.collapsed .sidebar-item span {
+            display: none;
+        }
+
+        .sidebar.collapsed .sidebar-item {
+            justify-content: center;
+            padding: 15px 0;
+        }
+
+        .sidebar.collapsed + .dashboard-header {
+            margin-left: 70px;
+            width: calc(100% - 70px);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .applications-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                position: fixed;
+                left: 0;
+                top: 70px;
+                height: calc(100vh - 70px);
+                z-index: 999;
+            }
+
+            .sidebar.visible {
+                transform: translateX(0);
+            }
+
+            .sidebar.collapsed {
+                transform: translateX(-100%);
+            }
+
+            .dashboard-header {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .sidebar-toggle {
+                display: block;
+            }
+
+            .filter-controls {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .applications-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card-actions {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                justify-content: center;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -74,276 +536,302 @@
                     <option>Sort by Type</option>
                 </select>
             </div>
+            
+            <div class="applications-grid">
+                <!-- Application Card 1 -->
+                <div class="application-card">
+                    <div class="card-header">
+                        <div>
+                            <h3 class="application-title">RTI Application</h3>
+                            <p class="application-id">APP-2023-05678</p>
+                            <p class="application-date">Submitted: 15 Oct 2023</p>
+                        </div>
+                        <span class="status-badge status-inprogress">In Progress</span>
+                    </div>
+                    
+                    <div class="progress-container">
+                        <div class="progress-info">
+                            <span>Status: Under Review</span>
+                            <span>65% Complete</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 65%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Department:</span>
+                            <span>Public Works Department</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Last Updated:</span>
+                            <span>25 Oct 2023</span>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">15 Oct 2023</div>
+                            <div class="timeline-content">Application submitted</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">18 Oct 2023</div>
+                            <div class="timeline-content">Application received by department</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">22 Oct 2023</div>
+                            <div class="timeline-content">Under review by PIO</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-actions">
+                        <button class="action-btn view-btn">View Details</button>
+                        <button class="action-btn download-btn">
+                            <i class="fas fa-download"></i> Download Copy
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Application Card 2 -->
+                <div class="application-card">
+                    <div class="card-header">
+                        <div>
+                            <h3 class="application-title">Property Dispute Petition</h3>
+                            <p class="application-id">APP-2023-04231</p>
+                            <p class="application-date">Submitted: 5 Sep 2023</p>
+                        </div>
+                        <span class="status-badge status-completed">Completed</span>
+                    </div>
+                    
+                    <div class="progress-container">
+                        <div class="progress-info">
+                            <span>Status: Case Resolved</span>
+                            <span>100% Complete</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 100%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Court:</span>
+                            <span>District Court, Bangalore</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Last Updated:</span>
+                            <span>12 Oct 2023</span>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">5 Sep 2023</div>
+                            <div class="timeline-content">Petition filed</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">20 Sep 2023</div>
+                            <div class="timeline-content">First hearing</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">5 Oct 2023</div>
+                            <div class="timeline-content">Mediation session</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">12 Oct 2023</div>
+                            <div class="timeline-content">Case resolved</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-actions">
+                        <button class="action-btn view-btn">View Details</button>
+                        <button class="action-btn download-btn">
+                            <i class="fas fa-download"></i> Download Order
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Application Card 3 -->
+                <div class="application-card">
+                    <div class="card-header">
+                        <div>
+                            <h3 class="application-title">Consumer Complaint</h3>
+                            <p class="application-id">APP-2023-03879</p>
+                            <p class="application-date">Submitted: 28 Aug 2023</p>
+                        </div>
+                        <span class="status-badge status-pending">Pending</span>
+                    </div>
+                    
+                    <div class="progress-container">
+                        <div class="progress-info">
+                            <span>Status: Awaiting Response</span>
+                            <span>30% Complete</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 30%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Forum:</span>
+                            <span>District Consumer Forum</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Last Updated:</span>
+                            <span>10 Sep 2023</span>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">28 Aug 2023</div>
+                            <div class="timeline-content">Complaint filed</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">5 Sep 2023</div>
+                            <div class="timeline-content">Notice issued to opposite party</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-actions">
+                        <button class="action-btn view-btn">View Details</button>
+                        <button class="action-btn download-btn">
+                            <i class="fas fa-download"></i> Download Copy
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Application Card 4 -->
+                <div class="application-card">
+                    <div class="card-header">
+                        <div>
+                            <h3 class="application-title">Legal Heir Certificate</h3>
+                            <p class="application-id">APP-2023-02945</p>
+                            <p class="application-date">Submitted: 10 Aug 2023</p>
+                        </div>
+                        <span class="status-badge status-rejected">Rejected</span>
+                    </div>
+                    
+                    <div class="progress-container">
+                        <div class="progress-info">
+                            <span>Status: Application Rejected</span>
+                            <span>80% Complete</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 80%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Authority:</span>
+                            <span>Tahsildar Office</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Last Updated:</span>
+                            <span>25 Aug 2023</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Reason:</span>
+                            <span>Incomplete documentation</span>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">10 Aug 2023</div>
+                            <div class="timeline-content">Application submitted</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">15 Aug 2023</div>
+                            <div class="timeline-content">Verification process started</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">20 Aug 2023</div>
+                            <div class="timeline-content">Deficiency notice issued</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">25 Aug 2023</div>
+                            <div class="timeline-content">Application rejected</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-actions">
+                        <button class="action-btn view-btn">View Details</button>
+                        <button class="action-btn download-btn">
+                            <i class="fas fa-redo"></i> Reapply
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Empty State (hidden by default) -->
+            <!-- <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="far fa-folder-open"></i>
+                </div>
+                <h3>No Applications Found</h3>
+                <p>You haven't submitted any applications yet. Start by creating a new application.</p>
+                <button class="action-btn view-btn" style="margin-top: 20px;">Create New Application</button>
+            </div> -->
         </div>
-        
-        <div class="applications-grid">
-            <!-- Application Card 1 -->
-            <div class="application-card">
-                <div class="card-header">
-                    <div>
-                        <h3 class="application-title">RTI Application</h3>
-                        <p class="application-id">APP-2023-05678</p>
-                        <p class="application-date">Submitted: 15 Oct 2023</p>
-                    </div>
-                    <span class="status-badge status-inprogress">In Progress</span>
-                </div>
-                
-                <div class="progress-container">
-                    <div class="progress-info">
-                        <span>Status: Under Review</span>
-                        <span>65% Complete</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 65%"></div>
-                    </div>
-                </div>
-                
-                <div class="card-details">
-                    <div class="detail-row">
-                        <span class="detail-label">Department:</span>
-                        <span>Public Works Department</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Last Updated:</span>
-                        <span>25 Oct 2023</span>
-                    </div>
-                </div>
-                
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-date">15 Oct 2023</div>
-                        <div class="timeline-content">Application submitted</div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">18 Oct 2023</div>
-                        <div class="timeline-content">Application received by department</div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">22 Oct 2023</div>
-                        <div class="timeline-content">Under review by PIO</div>
-                    </div>
-                </div>
-                
-                <div class="card-actions">
-                    <button class="action-btn view-btn">View Details</button>
-                    <button class="action-btn download-btn">
-                        <i class="fas fa-download"></i> Download Copy
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Application Card 2 -->
-            <div class="application-card">
-                <div class="card-header">
-                    <div>
-                        <h3 class="application-title">Property Dispute Petition</h3>
-                        <p class="application-id">APP-2023-04231</p>
-                        <p class="application-date">Submitted: 5 Sep 2023</p>
-                    </div>
-                    <span class="status-badge status-completed">Completed</span>
-                </div>
-                
-                <div class="progress-container">
-                    <div class="progress-info">
-                        <span>Status: Case Resolved</span>
-                        <span>100% Complete</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 100%"></div>
-                    </div>
-                </div>
-                
-                <div class="card-details">
-                    <div class="detail-row">
-                        <span class="detail-label">Court:</span>
-                        <span>District Court, Bangalore</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Last Updated:</span>
-                        <span>12 Oct 2023</span>
-                    </div>
-                </div>
-                
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-date">5 Sep 2023</div>
-                        <div class="timeline-content">Petition filed</div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">20 Sep 2023</div>
-                        <div class="timeline-content">First hearing</div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">5 Oct 2023</div>
-                        <div class="timeline-content">Mediation session</div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">12 Oct 2023</div>
-                        <div class="timeline-content">Case resolved</div>
-                    </div>
-                </div>
-                
-                <div class="card-actions">
-                    <button class="action-btn view-btn">View Details</button>
-                    <button class="action-btn download-btn">
-                        <i class="fas fa-download"></i> Download Order
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Application Card 3 -->
-            <div class="application-card">
-                <div class="card-header">
-                    <div>
-                        <h3 class="application-title">Consumer Complaint</h3>
-                        <p class="application-id">APP-2023-03879</p>
-                        <p class="application-date">Submitted: 28 Aug 2023</p>
-                    </div>
-                    <span class="status-badge status-pending">Pending</span>
-                </div>
-                
-                <div class="progress-container">
-                    <div class="progress-info">
-                        <span>Status: Awaiting Response</span>
-                        <span>30% Complete</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 30%"></div>
-                    </div>
-                </div>
-                
-                <div class="card-details">
-                    <div class="detail-row">
-                        <span class="detail-label">Forum:</span>
-                        <span>District Consumer Forum</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Last Updated:</span>
-                        <span>10 Sep 2023</span>
-                    </div>
-                </div>
-                
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-date">28 Aug 2023</div>
-                        <div class="timeline-content">Complaint filed</div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">5 Sep 2023</div>
-                        <div class="timeline-content">Notice issued to opposite party</div>
-                    </div>
-                </div>
-                
-                <div class="card-actions">
-                    <button class="action-btn view-btn">View Details</button>
-                    <button class="action-btn download-btn">
-                        <i class="fas fa-download"></i> Download Copy
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Application Card 4 -->
-            <div class="application-card">
-                <div class="card-header">
-                    <div>
-                        <h3 class="application-title">Legal Heir Certificate</h3>
-                        <p class="application-id">APP-2023-02945</p>
-                        <p class="application-date">Submitted: 10 Aug 2023</p>
-                    </div>
-                    <span class="status-badge status-rejected">Rejected</span>
-                </div>
-                
-                <div class="progress-container">
-                    <div class="progress-info">
-                        <span>Status: Application Rejected</span>
-                        <span>80% Complete</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 80%"></div>
-                    </div>
-                </div>
-                
-                <div class="card-details">
-                    <div class="detail-row">
-                        <span class="detail-label">Authority:</span>
-                        <span>Tahsildar Office</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Last Updated:</span>
-                        <span>25 Aug 2023</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Reason:</span>
-                        <span>Incomplete documentation</span>
-                    </div>
-                </div>
-                
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-date">10 Aug 2023</div>
-                        <div class="timeline-content">Application submitted</div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">15 Aug 2023</div>
-                        <div class="timeline-content">Verification process started</div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">20 Aug 2023</div>
-                        <div class="timeline-content">Deficiency notice issued</div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">25 Aug 2023</div>
-                        <div class="timeline-content">Application rejected</div>
-                    </div>
-                </div>
-                
-                <div class="card-actions">
-                    <button class="action-btn view-btn">View Details</button>
-                    <button class="action-btn download-btn">
-                        <i class="fas fa-redo"></i> Reapply
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Empty State (hidden by default) -->
-        <!-- <div class="empty-state">
-            <div class="empty-icon">
-                <i class="far fa-folder-open"></i>
-            </div>
-            <h3>No Applications Found</h3>
-            <p>You haven't submitted any applications yet. Start by creating a new application.</p>
-            <button class="action-btn view-btn" style="margin-top: 20px;">Create New Application</button>
-        </div> -->
     </div>
     
     <script>
-        // This would include functionality for:
-        // - Filtering applications
-        // - Viewing application details
-        // - Downloading documents
-        // - Handling empty state
-        
-        document.querySelectorAll('.view-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                // In a real implementation, this would open a detailed view
-                alert('Opening detailed view for this application');
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create sidebar toggle button
+            const sidebar = document.querySelector('.sidebar');
+            const toggleBtn = document.createElement('button');
+            toggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            toggleBtn.className = 'sidebar-toggle';
+            document.body.appendChild(toggleBtn);
+            
+            // Toggle sidebar collapse
+            toggleBtn.addEventListener('click', function() {
+                sidebar.classList.toggle('visible');
             });
-        });
-        
-        document.querySelectorAll('.download-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                // In a real implementation, this would trigger a download
-                alert('Preparing document for download');
+            
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener('click', function(e) {
+                if (window.innerWidth <= 768 && !sidebar.contains(e.target)) {
+                    sidebar.classList.remove('visible');
+                }
             });
-        });
-        
-        // Filter functionality
-        document.querySelectorAll('.filter-select').forEach(select => {
-            select.addEventListener('change', function() {
-                // In a real implementation, this would filter/sort applications
-                console.log('Filtering applications by: ' + this.value);
+            // View button functionality
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    alert('Opening detailed view for this application');
+                });
             });
+            
+            // Download button functionality
+            document.querySelectorAll('.download-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    alert('Preparing document for download');
+                });
+            });
+            
+            // Filter functionality
+            document.querySelectorAll('.filter-select').forEach(select => {
+                select.addEventListener('change', function() {
+                    console.log('Filtering applications by: ' + this.value);
+                });
+            });
+            
+            // Responsive check
+            function checkResponsive() {
+                if (window.innerWidth > 768) {
+                    sidebar.classList.remove('visible');
+                    toggleBtn.style.display = 'none';
+                } else {
+                    toggleBtn.style.display = 'block';
+                }
+            }
+            
+            window.addEventListener('resize', checkResponsive);
+            checkResponsive();
         });
     </script>
 </body>

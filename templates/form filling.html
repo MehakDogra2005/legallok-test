@@ -41,7 +41,10 @@
             border-radius: 50%;
             margin-right: 10px;
         }
-        
+        a{
+            color: inherit;
+            text-decoration: none; 
+        }
         .brand-name {
             font-size: 20px;
             font-weight: 600;
@@ -64,6 +67,10 @@
             transition: all 0.3s ease;
             border-radius: 5px;
         }
+        .back-btn:hover {
+            background-color: var(--border-color);
+        }
+        
         
         .nav-btn:hover {
             background-color: rgba(255, 255, 255, 0.2);
@@ -229,15 +236,15 @@
             <span class="brand-name">Legal Lok</span>
         </div>
         <div class="nav-buttons">
-            <button class="nav-btn">Home</button>
-            <button class="nav-btn">Forms</button>
-            <button class="nav-btn">RTI Guide</button>
-            <button class="nav-btn">Contact</button>
         </div>
     </header>
     
     <div class="main-content">
+        <button class="back-btn" onclick="window.history.back()">
+            <i class="fas fa-arrow-left"></i> Back
+        </button>
         <div class="instructions-section">
+
             <button class="translate-btn" id="hindiTranslateBtn">हिंदी में</button>
             <h2 id="instructionsHeading">How to Fill RTI Application</h2>
             
