@@ -5,6 +5,10 @@ from flask_cors import CORS
 import os
 from datetime import datetime
 import time
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Initialize Flask app with proper CORS
 app = Flask(__name__)
@@ -13,18 +17,24 @@ CORS(app)
 
 # Load API key with better error handling
 try:
-    # Get the absolute path to the static directory
-    static_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'static')
-    keys_path = os.path.join(static_dir, 'Keys.txt')
-    print(f"Looking for API key at: {keys_path}")  # Debug print
+    # First try to get API key from environment variable (GitHub secret)
+    api_key = os.environ.get('api_key')
     
-    with open(keys_path, "r") as file:
-        api_key = file.read().strip()
-        # Skip comment lines
-        api_key = [line for line in api_key.split('\n') if not line.startswith('#')][0].strip()
+    # If not in environment, try to load from file
+    if not api_key:
+        # Get the absolute path to the static directory
+        static_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'static')
+        keys_path = os.path.join(static_dir, 'Keys.txt')
+        print(f"Looking for API key at: {keys_path}")  # Debug print
+        
+        if os.path.exists(keys_path):
+            with open(keys_path, "r") as file:
+                api_key = file.read().strip()
+                # Skip comment lines
+                api_key = [line for line in api_key.split('\n') if not line.startswith('#')][0].strip()
     
     if not api_key or api_key == "YOUR_GEMINI_API_KEY_HERE":
-        raise ValueError("Please replace 'YOUR_GEMINI_API_KEY_HERE' in Keys.txt with your actual Gemini API key from https://makersuite.google.com/app/apikey")
+        raise ValueError("Please set the 'api_key' GitHub secret or update Keys.txt with your actual Gemini API key from https://makersuite.google.com/app/apikey")
     
     print(f"API key loaded successfully: {api_key[:5]}...")  # Print first 5 chars for verification
 except Exception as e:
